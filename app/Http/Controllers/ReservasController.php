@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Butaca;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ReservasController extends Controller
 {
@@ -58,26 +59,19 @@ class ReservasController extends Controller
         $reserva->id_user = $request->id_user;
         $reserva->ids_butaca = implode(',', $butacasACrear);
         $reserva->fecha = '21-11-2021';
-        $reserva->numero_personas = 2;
+        $reserva->numero_personas = count($request->id_butaca);
         $reserva->save();
+
+        $logName = storage_path() . '\logs\reservasLog.txt';
+        File::append($logName,
+            "Id reserva: " . $reserva->id . ", Asientos: " . $reserva->ids_butaca . ", Fecha: " . $reserva->fecha .
+            ", Nº Personas: " . $reserva->numero_personas . PHP_EOL
+        );
 
         return redirect()->route('home')->with([
            'message' => 'Reserva guardada correctamente'
         ]);
 
-    }
-
-    private function guardarButaca($ids_butacas){
-        //separo fila de columna
-        $arrayButaca = str_split($ids_butacas);
-
-        //guardo un registro por butaca seleccionada
-        $butaca = new Butaca();
-        $butaca->fila = $arrayButaca[0];
-        $butaca->columna = $arrayButaca[1];
-        $butaca->save();
-
-        return $butaca->id;
     }
 
     /**
@@ -123,5 +117,18 @@ class ReservasController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function guardarButaca($ids_butacas){
+        //separo fila de columna
+        $arrayButaca = str_split($ids_butacas);
+
+        //guardo un registro por butaca seleccionada
+        $butaca = new Butaca();
+        $butaca->fila = $arrayButaca[0];
+        $butaca->columna = $arrayButaca[1];
+        $butaca->save();
+
+        return $butaca->id;
     }
 }
