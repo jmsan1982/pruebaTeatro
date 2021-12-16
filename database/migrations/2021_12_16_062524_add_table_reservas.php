@@ -17,12 +17,8 @@ class AddTableReservas extends Migration
             $table->id();
 
             $table->integer('id_user');
-            $table->foreign('id_user')->references('id')->on('users');
-
-            $table->integer('id_butaca');
-            $table->foreign('id_butaca')->references('id')->on('butacas');
-
-            $table->timestamp('fecha');
+            $table->string('ids_butaca');
+            $table->string('fecha');
             $table->integer('numero_personas');
             $table->timestamps();
         });
