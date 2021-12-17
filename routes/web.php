@@ -21,4 +21,5 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::resource('reservas', \App\Http\Controllers\ReservasController::class);
+Route::resource('reservas', ReservasController::class);
+Route::get('/comprobarReservas/{fecha}', [ReservasController::class, 'comprobarButacas']);

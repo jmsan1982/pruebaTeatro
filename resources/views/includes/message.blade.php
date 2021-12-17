@@ -3,8 +3,13 @@
     {{ session('message') }}
 </div>
 @endif
-@if(session('messageWrong'))
+@if(session('idButacaWrong'))
     <div class="alert alert-danger">
-        {{ session('messageWrong') }}
+        {{ session('idButacaWrong') }}
+    </div>
+@endif
+@if(session('fechaNoSeleccionada'))
+    <div class="alert alert-danger">
+        {{ session('fechaNoSeleccionada') }}
     </div>
 @endif

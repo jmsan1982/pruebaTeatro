@@ -6,17 +6,48 @@ use App\Models\Butaca;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 
 class ReservasController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+
+        if (is_null($request->fecha) || empty($request->fecha)){
+            return redirect()->route('home')->with([
+                'fechaNoSeleccionada' => 'Debe seleccionar al menos una fecha'
+            ]);
+        }
+
+
+
+        $fechaReserva = $request->fecha;
+        $reservas = Reserva::where('fecha', $fechaReserva)->get();
+
+        foreach ($reservas as $reserva){
+
+        }
+
+
+        $data['fechaReserva'] = $request->fecha;
+        $data['filas'] = range('A', 'E');
+        $data['columnas'] = range(0,9);
+        return view('reservas')->with($data);
     }
 
     /**
@@ -38,10 +69,11 @@ class ReservasController extends Controller
     public function store(Request $request)
     {
         if (is_null($request->id_butaca) || empty($request->id_butaca)){
-            return redirect()->route('home')->with([
-                'messageWrong' => 'Debe seleccionar al menos una butaca'
+            return redirect()->route('reservas')->with([
+                'idButacaWrong' => 'Debe seleccionar al menos una butaca'
             ]);
         }
+
         $this->validate($request, [
             'id_butaca' => 'array'
         ]);
@@ -57,8 +89,8 @@ class ReservasController extends Controller
 
         $reserva = new Reserva();
         $reserva->id_user = $request->id_user;
-        $reserva->ids_butaca = implode(',', $butacasACrear);
-        $reserva->fecha = '21-11-2021';
+        $reserva->ids_butaca = implode(',',$ids_butacas);
+        $reserva->fecha = date('d-m-Y', strtotime($request->fecha));
         $reserva->numero_personas = count($request->id_butaca);
         $reserva->save();
 
@@ -72,6 +104,12 @@ class ReservasController extends Controller
            'message' => 'Reserva guardada correctamente'
         ]);
 
+    }
+
+    public function comprobarButacas($fecha){
+        Log::debug("llega");
+        Log::debug($fecha);
+        return view('prueba');
     }
 
     /**

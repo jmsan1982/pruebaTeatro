@@ -23,8 +23,6 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['filas'] = range('A', 'E');
-        $data['columnas'] = range(0,9);
-        return view('home')->with($data);
+        return view('home');
     }
 }

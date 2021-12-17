@@ -15,24 +15,12 @@
                         @endif
                         <div class="text-center">
                             <div class="col-md-12">
-                                <form method="POST" action="{{route('reservas.store')}}">
+                                <form method="GET" action="{{route('reservas.index')}}">
                                     @csrf
-                                    <input type="hidden" name="id_user" value="{{auth()->user()->id}}">
-                                @foreach($filas as $fila)
-                                    <div class="row">
-                                        Fila {{$fila}}
-                                            @foreach($columnas as $columna)
-                                                <div class="col-md-1">
-                                                    {{$fila}}{{$columna}}
-                                                    <img src="{{url('images/bvacia.jpg')}}" height="50px" width="50px">
-                                                    <input type="checkbox" name="id_butaca[]"
-                                                           value="{{$fila}}{{$columna}}">
-                                                </div>
-                                            @endforeach
-                                    </div>
-                                @endforeach
+                                    <label for="fecha">Dia reserva:</label>
+                                    <input type="date" id="fechaReserva" name ="fecha" value="{{ old('fecha') }}" onchange="disponibilidad()">
                                     <div class="mt-4">
-                                        <button type="submit" class="btn btn-success">Reservar</button>
+                                        <button type="submit" class="btn btn-success">Disponibilidad</button>
                                     </div>
                                 </form>
                             </div>
