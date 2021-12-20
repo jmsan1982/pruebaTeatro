@@ -78,20 +78,11 @@ class ReservasController extends Controller
             'id_butaca' => 'array'
         ]);
 
-        $ids_butacas = [];
-
-        $butacasACrear = $request->id_butaca;
-
-        foreach ($butacasACrear as $butaca){
-           $id_butaca =  $this->guardarButaca($butaca);
-           array_push($ids_butacas, $id_butaca);
-        }
-
         $reserva = new Reserva();
         $reserva->id_user = $request->id_user;
-        $reserva->ids_butaca = implode(',',$ids_butacas);
         $reserva->fecha = date('d-m-Y', strtotime($request->fecha));
         $reserva->numero_personas = count($request->id_butaca);
+        $reserva->butacas = implode(',',$request->id_butaca);
         $reserva->save();
 
         $logName = storage_path() . '\logs\reservasLog.txt';
@@ -106,12 +97,6 @@ class ReservasController extends Controller
 
     }
 
-    public function comprobarButacas($fecha){
-        Log::debug("llega");
-        Log::debug($fecha);
-        return view('prueba');
-    }
-
     /**
      * Display the specified resource.
      *
@@ -120,7 +105,15 @@ class ReservasController extends Controller
      */
     public function show($id)
     {
-        //
+        $reservas = Reserva::where('id_user', $id)->get();
+
+        if (empty($reservas)){
+            $data['reservas'] = null;
+        }else{
+            $data['reservas'] = $reservas;
+        }
+
+        return view('verReservas')->with($data);
     }
 
     /**
@@ -131,7 +124,7 @@ class ReservasController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -155,18 +148,5 @@ class ReservasController extends Controller
     public function destroy($id)
     {
         //
-    }
-
-    private function guardarButaca($ids_butacas){
-        //separo fila de columna
-        $arrayButaca = str_split($ids_butacas);
-
-        //guardo un registro por butaca seleccionada
-        $butaca = new Butaca();
-        $butaca->fila = $arrayButaca[0];
-        $butaca->columna = $arrayButaca[1];
-        $butaca->save();
-
-        return $butaca->id;
     }
 }

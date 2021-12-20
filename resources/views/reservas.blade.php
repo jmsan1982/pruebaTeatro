@@ -7,7 +7,7 @@
                 @include('includes/message')
                 <div class="card">
                     <div class="card-header">Reserva tu butaca
-                    <a class="float-end" href="{{ route() }}">Ver reservas</a>
+                    @include('verReservasA')
                     </div>
                     <div class="card-body">
                         @if (session('status'))
