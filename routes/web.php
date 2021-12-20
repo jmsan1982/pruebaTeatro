@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\ReservasController;
+use \App\Http\Controllers\PerfilController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,5 +22,10 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//perfil usuario
+Route::get('/perfil', [App\Http\Controllers\PerfilController::class, 'index'])->name('perfil.index');
+Route::post('/perfil/update', [App\Http\Controllers\PerfilController::class, 'update'])->name('perfil.update');
+Route::get('/perfil/destroy/{id}', [App\Http\Controllers\PerfilController::class, 'destroy'])->name('perfil.destroy');
+//reservas
 Route::resource('reservas', ReservasController::class);
 Route::get('/comprobarReservas/{fecha}', [ReservasController::class, 'comprobarButacas']);

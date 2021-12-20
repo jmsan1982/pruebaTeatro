@@ -6,7 +6,9 @@
             <div class="col-md-8">
                 @include('includes/message')
                 <div class="card">
-                    <div class="card-header text-center">Reserva tu butaca</div>
+                    <div class="card-header">Reserva tu butaca
+                    <a class="float-end" href="{{ route() }}">Ver reservas</a>
+                    </div>
                     <div class="card-body">
                         @if (session('status'))
                             <div class="alert alert-success" role="alert">
