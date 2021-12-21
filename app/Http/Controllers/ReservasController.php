@@ -124,19 +124,40 @@ class ReservasController extends Controller
      */
     public function edit($id)
     {
+        $reserva = Reserva::find($id);
 
+        $data['idReserva'] = $reserva->id;
+        $data['fechaReserva'] = $reserva->fecha;
+        $data['filas'] = range('A', 'E');
+        $data['columnas'] = range(0,9);
+        $data['update'] = 'reservas.actualizar';
+
+        return view('reservas')->with($data);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function updateReserva(Request $request)
     {
-        //
+        if (is_null($request->id_butaca) || empty($request->id_butaca)){
+            return redirect()->route('reservas')->with([
+                'idButacaWrong' => 'Debe seleccionar al menos una butaca'
+            ]);
+        }
+
+        $this->validate($request, [
+            'id_butaca' => 'array'
+        ]);
+
+        $reserva = Reserva::find($request->idReserva);
+        $reserva->id_user = $request->id_user;
+        $reserva->fecha = date('d-m-Y', strtotime($request->fecha));
+        $reserva->numero_personas = count($request->id_butaca);
+        $reserva->butacas = implode(',',$request->id_butaca);
+        $reserva->update();
+
+        return redirect()->route('home')->with([
+            'message' => 'Reserva guardada correctamente'
+        ]);
+
     }
 
     /**
@@ -147,6 +168,6 @@ class ReservasController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

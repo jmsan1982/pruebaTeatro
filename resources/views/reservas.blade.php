@@ -17,10 +17,13 @@
                         @endif
                         <div class="text-center">
                             <div class="col-md-12">
-                                <form method="POST" action="{{route('reservas.store')}}">
+                                <form method="POST" action="{{isset($update) ? route($update) : route('reservas.store')}}">
                                     @csrf
                                     <input type="hidden" name="id_user" value="{{auth()->user()->id}}">
                                     <input type="hidden" name="fecha" value="{{$fechaReserva}}">
+                                    @if(isset($update))
+                                        <input type="hidden" name="idReserva" value="{{$idReserva}}">
+                                    @endif
                                     @foreach($filas as $fila)
                                         <div class="row">
                                             Fila {{$fila}}

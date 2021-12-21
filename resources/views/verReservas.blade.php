@@ -22,6 +22,7 @@
                                     <tr>
                                         <th scope="col">Fecha</th>
                                         <th scope="col">Butacas</th>
+                                        <th scope="col">Nº Personas</th>
                                         <th scope="col">Modificar / Eliminar</th>
                                     </tr>
                                     </thead>
@@ -30,12 +31,13 @@
                                         <tr>
                                             <td>{{date("d-m-Y", strtotime($reserva->fecha))}}</td>
                                             <td>{{$reserva->butacas}}</td>
+                                            <td>{{$reserva->numero_personas}}</td>
                                             <td>
-                                                <a href="" class="btn btn-success btn-sm">
+                                                <a href="{{ route('reservas.edit', $reserva->id) }}" class="btn btn-success btn-sm">
                                                     <i class='fas fa-edit fa-lg'></i>
                                                 </a>
                                                 /
-                                                <a href="" class="btn btn-danger btn-sm">
+                                                <a href="{{ route('reservas.destroy', $reserva->id) }}" class="btn btn-danger btn-sm">
                                                     <i class='fas fa-trash-alt fa-lg'></i>
                                                 </a>
                                             </td>
