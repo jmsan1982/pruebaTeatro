@@ -19,6 +19,7 @@
                             <div class="col-md-12">
                                 <form method="GET" action="{{route('reservas.index')}}">
                                     @csrf
+                                    <input type="hidden" name="id_user" value="{{auth()->user()->id}}">
                                     <label for="fecha">Dia reserva:</label>
                                     <input type="date" id="fechaReserva" name ="fecha" value="{{ old('fecha') }}" onchange="disponibilidad()">
                                     <div class="mt-4">

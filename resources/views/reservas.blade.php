@@ -26,13 +26,18 @@
                                     @endif
                                     @foreach($filas as $fila)
                                         <div class="row">
+
                                             Fila {{$fila}}
                                             @foreach($columnas as $columna)
                                                 <div class="col-md-1">
                                                     {{$fila}}{{$columna}}
-                                                    <img src="{{url('images/bvacia.jpg')}}" height="50px" width="50px">
-                                                    <input type="checkbox" name="id_butaca[]"
-                                                           value="{{$fila}}{{$columna}}">
+                                                    @if(array_search($fila . $columna, $butacas) === false)
+                                                        <img src="{{url('images/bvacia.jpg')}}" height="50px" width="50px">
+                                                        <input type="checkbox" name="id_butaca[]"
+                                                               value="{{$fila}}{{$columna}}">
+                                                    @else
+                                                        <img src="{{url('images/breservada.jpg')}}" height="50px" width="50px">
+                                                    @endif
                                                 </div>
                                             @endforeach
                                         </div>

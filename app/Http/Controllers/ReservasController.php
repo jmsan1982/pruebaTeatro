@@ -34,14 +34,16 @@ class ReservasController extends Controller
 
         $fechaReserva = $request->fecha . ' 00:00:00' ;
 
-        $fecha_actual = strtotime(date("Y-m-d", time()));
-        if ($fecha_actual > $fechaReserva){
+        $fecha_actual = date("Y-m-d");
+
+        if (strtotime($fecha_actual) > strtotime($request->fecha)){
             return redirect()->route('home')->with([
                 'fechaNoSeleccionada' => 'La fecha elegida es menor que la actual, seleccione otra fecha'
             ]);
         }
 
-        $reserva = Reserva::where('fecha', $fechaReserva)->first();
+        $reserva = Reserva::where('fecha', $fechaReserva)
+            ->where('id_user', $request->id_user)->first();
 
         if (isset($reserva->id)){
             return redirect()->route('home')->with([
@@ -49,7 +51,18 @@ class ReservasController extends Controller
             ]);
         }
 
+        $reservas = Reserva::where('fecha', $fechaReserva)->get();
 
+        $butacas = [];
+
+        foreach ($reservas as $reserva){
+            $butacasArray = explode(",", $reserva->butacas);
+            foreach ($butacasArray as $butacaArray){
+                array_push($butacas, $butacaArray);
+            }
+        }
+
+        $data['butacas'] = $butacas;
         $data['fechaReserva'] = $request->fecha;
         $data['filas'] = range('A', 'E');
         $data['columnas'] = range(0,9);
@@ -65,8 +78,8 @@ class ReservasController extends Controller
     public function store(Request $request)
     {
         if (is_null($request->id_butaca) || empty($request->id_butaca)){
-            return redirect()->route('reservas')->with([
-                'idButacaWrong' => 'Debe seleccionar al menos una butaca'
+            return redirect()->route('home')->with([
+                'idButacaWrong' => 'Debe seleccionar al menos una butaca',
             ]);
         }
 
@@ -120,8 +133,20 @@ class ReservasController extends Controller
      */
     public function edit($id)
     {
-        $reserva = Reserva::find($id);
 
+        $reserva = Reserva::find($id);
+        $reservas = Reserva::where('fecha', $reserva->fecha)->get();
+
+        $butacas = [];
+
+        foreach ($reservas as $reserva){
+            $butacasArray = explode(",", $reserva->butacas);
+            foreach ($butacasArray as $butacaArray){
+                array_push($butacas, $butacaArray);
+            }
+        }
+
+        $data['butacas'] = $butacas;
         $data['idReserva'] = $reserva->id;
         $data['fechaReserva'] = $reserva->fecha;
         $data['filas'] = range('A', 'E');
