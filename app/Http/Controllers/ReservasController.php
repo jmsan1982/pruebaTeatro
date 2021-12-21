@@ -32,13 +32,21 @@ class ReservasController extends Controller
             ]);
         }
 
+        $fechaReserva = $request->fecha . ' 00:00:00' ;
 
+        $fecha_actual = strtotime(date("Y-m-d", time()));
+        if ($fecha_actual > $fechaReserva){
+            return redirect()->route('home')->with([
+                'fechaNoSeleccionada' => 'La fecha elegida es menor que la actual, seleccione otra fecha'
+            ]);
+        }
 
-        $fechaReserva = $request->fecha;
-        $reservas = Reserva::where('fecha', $fechaReserva)->get();
+        $reserva = Reserva::where('fecha', $fechaReserva)->first();
 
-        foreach ($reservas as $reserva){
-
+        if (isset($reserva->id)){
+            return redirect()->route('home')->with([
+                'fechaNoSeleccionada' => 'Ya tiene una reserva en esa fecha, modifique la existente'
+            ]);
         }
 
 
