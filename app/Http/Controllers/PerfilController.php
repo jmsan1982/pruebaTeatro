@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class PerfilController extends Controller
 {
@@ -47,7 +48,7 @@ class PerfilController extends Controller
         $usuario->name = $request->name;
         $usuario->apellidos = $request->apellidos;
         $usuario->email = $request->email;
-        $usuario->password = $request->password;
+        $usuario->password = Hash::make($request->password);
 
         $usuario->update();
 
