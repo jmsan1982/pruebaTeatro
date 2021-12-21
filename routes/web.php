@@ -30,3 +30,4 @@ Route::get('/perfil/destroy/{id}', [App\Http\Controllers\PerfilController::class
 Route::resource('reservas', ReservasController::class);
 Route::get('/comprobarReservas/{fecha}', [ReservasController::class, 'comprobarButacas']);
 Route::post('/reservas/actualizar', [ReservasController::class, 'updateReserva'])->name('reservas.actualizar');
+Route::get('/reservas/eliminar/{id}', [ReservasController::class, 'eliminarReserva'])->name('reservas.eliminar');

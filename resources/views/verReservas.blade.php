@@ -37,7 +37,7 @@
                                                     <i class='fas fa-edit fa-lg'></i>
                                                 </a>
                                                 /
-                                                <a href="{{ route('reservas.destroy', $reserva->id) }}" class="btn btn-danger btn-sm">
+                                                <a href="{{ route('reservas.eliminar', $reserva->id) }}" class="btn btn-danger btn-sm">
                                                     <i class='fas fa-trash-alt fa-lg'></i>
                                                 </a>
                                             </td>

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Butaca;
 use App\Models\Reserva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Log;
 
 class ReservasController extends Controller
 {
@@ -48,16 +46,6 @@ class ReservasController extends Controller
         $data['filas'] = range('A', 'E');
         $data['columnas'] = range(0,9);
         return view('reservas')->with($data);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
     }
 
     /**
@@ -155,7 +143,7 @@ class ReservasController extends Controller
         $reserva->update();
 
         return redirect()->route('home')->with([
-            'message' => 'Reserva guardada correctamente'
+            'message' => 'Reserva modificada correctamente'
         ]);
 
     }
@@ -166,8 +154,13 @@ class ReservasController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function eliminarReserva($id)
     {
+        $reserva = Reserva::find($id);
+        $reserva->delete();
 
+        return redirect()->route('home')->with([
+            'message' => 'Reserva Eliminada correctamente'
+        ]);
     }
 }
